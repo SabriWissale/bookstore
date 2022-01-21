@@ -1,0 +1,46 @@
+{% extends "base.html.twig" %}
+
+{% block title %} Accueil {% endblock %}
+
+{% block javascripts %}
+<script>
+$(document).ready(function(){
+    $('#myTable').dataTable();
+});
+</script>         
+{% endblock %}
+
+
+{% block body %}
+
+<style>
+.list-group{
+    max-height: 400px;
+    margin-bottom: 10px;
+    overflow:scroll;
+    -webkit-overflow-scrolling: touch;
+}
+
+.row .list-group
+{
+  margin: auto;
+  width: 100%;
+  padding: 10px;
+}
+</style>
+
+<h3 style="padding:20px;">List of Genres </h3>
+
+
+<div class="menu row" >
+    <div class="menu-category list-group col-lg-3 col-md-4 col-sm-6 col-xs-12">
+        <div class="menu-category-name list-group-item active">Categories</div>
+          {% for genre in genres %}
+        <a href="#" class="menu-item list-group-item">{{genre.getNom()}}<span class="badge">{{genre.getNumberLivres()}}</span></a>
+           {% endfor %}
+    </div>
+</div>
+
+
+
+{% endblock %}

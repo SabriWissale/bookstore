@@ -1,0 +1,158 @@
+{% extends "base.html.twig" %}
+
+{% block title %} Accueil {% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+
+{% endblock %}
+
+{% block javascripts %}
+<script>
+$(document).ready(function(){
+    $('#myTable').dataTable();
+});
+</script>         
+{% endblock %}
+
+{% block body %}
+
+
+<div class="card-body" style="width: max-content; text-align:center; margin:auto;">
+    
+      <div class="card mb-3">
+          <div class="card-header" style="height:25px">
+          
+              <h6 style="margin:25px;"><span class="fa fa-calendar"></span>Date range</h6>
+          </div>
+          <div class="card-body" style="margin-top: 20px; margin-left:20px;">
+              <div class="row px-4 mt-3">
+                <form action="{{ path('filterDate') }}" method="post">
+                  <input type="date" name="pub_date1" value="2019-12-21" required style="margin-right: 5px;"> 
+                  <input type="date" name="pub_date2" value="2019-12-21" required style="margin-right: 5px;"> 
+                  <button type="submit" class="btn btn-primary" style="height: 38px; width:50px; margin-left:10px;">Go</button>
+                </form>
+              </div>
+          </div>
+      </div>
+</div>
+
+<!-- -->
+
+
+<div style="text-align:center">
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" style="align:right; margin: 10px;" data-toggle="modal" data-target="#exampleModal">
+  other filters<i class="fas fa-filter"></i>
+</button>
+
+<table class="table table-striped" id="myTable" >
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">code ISBN</th>
+      <th scope="col">intitulé</th>
+      <th scope="col">pages</th>
+      <th scope="col">publication date</th>
+      <th scope="col">note</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for livre in livres %}
+    <tr>
+      <th scope="row">{{livre.getId()}}</th>
+      <td>{{livre.getIsbn()}}</td>
+      <td>{{livre.getTitre()}}</td>
+      <td>{{livre.getNombrePages()}}</td>
+      <td>{{livre.getDateDeParution() | date("d/m/Y") }}</td>
+      <td>{{livre.getNote()}}</td>
+      <td><a href="{{ path('showLivre', {'id' : livre.getId()}) }}">Détails</a></td>
+    </tr>
+  {% endfor %}
+  <tbody>
+</table>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" style="width:1500px;"  tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" style="width:1500px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Available filters (you can choose one or many)</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+     
+        <div class="modal-body ">
+            <div class="container-fluid" >
+
+                <form class="form" role="form" id="filter_form" action="{{ path('filter') }}" method="post" >
+                    <div class="form-inputs" >
+                        <div class="col-md-4">
+                          <div class="form-group" >
+                            <label for="column_name">by category</label>
+                                <select class="form-control" id="genres" name="genres" aria-label="categories" style="width:100%;">
+                                <option disabled selected value> -- select an option -- </option>
+                                {% for genre in genres %}
+                                <option value="{{genre.getId()}}">{{genre.getNom()}}</option>
+                                {% endfor %}
+                                    
+                                </select>
+                          </div>
+                        </div>
+
+                        <div class="col-md-4" style="padding:3px;">
+                            <div class="form-group" >
+                                <label for="condition">by author</label>
+                                <select class="form-control" id="auteurs" name="auteurs" aria-label="condition" style="width:100%;">
+                                    <option disabled selected value> -- select an option -- </option>
+                                    {% for auteur in auteurs %}
+                                    <option value="{{auteur.getId()}}">{{auteur.getNomPrenom()}}</option>
+                                    {% endfor %}
+                                    
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4" style="margin:3px;">
+                            <div class="form-group" >
+                                <label for="keyword">Grade</label>
+                                    <input type="number" min=0 max=20 step=any class="form-control" id="grade" name="grade"  aria-label="keyword" style="width:100%;">
+                            </div>
+                        </div>  
+
+                        <div class="col-md-4" style="padding:3px;">
+                            <div class="form-group" >
+                                <label for="keyword">publishing date</label>
+                                    <input type="date" class="form-control" id="pub_date" name="pub_date"  aria-label="keyword" style="width:100%;">
+                            </div>
+                        </div>                   
+                </div>
+
+
+                <div class="modal-footer" style="display:block;" >
+                 <button type="button" class="btn btn-secondary" data-dismiss="modal">close</button>
+                 <button type="submit" class="btn btn-primary">filter</button>
+                </div>
+                
+                </form>
+          </div>
+        </div>
+
+      
+
+
+      
+    </div>
+  </div>
+</div>
+
+
+
+
+
+{% endblock %}

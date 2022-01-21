@@ -1,0 +1,87 @@
+{% extends "base.html.twig" %}
+
+{% block title %} Details {% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+
+{% endblock %}
+
+{% block body %}
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+
+body {
+    background-color: #EEEFF3;
+    font-family: 'Poppins', sans-serif
+}
+
+.card {
+    width: 375px;
+    border: none;
+    border-radius: 10px
+}
+
+.media {
+    border: 1px solid #EBEDEC
+}
+
+.fa-angle-down {
+    margin-top: 13px
+}
+
+p.text-muted {
+    font-size: 10px;
+    margin-left: 25px;
+}
+
+.list {
+    list-style: none;
+    line-height: 50px;
+    font-size: 14px
+}
+
+ul.list li:hover {
+    border: none;
+    background-color: #ECF2FE;
+    color: #224bba;
+    cursor: pointer
+}
+</style>
+
+<div class="container d-flex justify-content-center">
+    <div class="card mt-5 px-4 pt-4 pb-2">
+        <div class="media p-2" style="align:left;"> 
+        <div class="media-body" >
+                <div class="d-flex flex-row justify-content-between">
+                    <h4 class=""><i class="fas fa-user" style="margin-right:10px;"></i>{{auteur.getNomPrenom()}}</h4>
+                </div>
+                <p class="text-muted" style="margin-top:10px; ">{{auteur.getNationalite()}}</p>
+                <p class="text-muted" style="margin-top:10px;">{{auteur.getDateNaissance() | date("d/m/Y")}}</p>
+                {% if auteur.getSexe() == 'F' %} 
+                    <p class="text-muted" style="margin-top:10px;">Feminin</p>
+                {% else %}
+                    <p class="text-muted" style="margin-top:10px;">Masculin</p>
+               {% endif %}
+                
+            </div>
+        </div>
+        <h6  style=" margin-top:20px; background-color:grey; color:white;"><span style="margin-left:30%">List of books related : <span></h6>
+        <ul class="list text-muted mt-3 pl-0">
+        {% for livre in auteur.getLivres() %}
+            <li><i class="fas fa-book mr-3 ml-2" style="margin-left:23%; margin-right: 10px;"></i>{{livre.getTitre()}}</li>
+        {% endfor %}   
+        </ul>
+    </div>
+</div>
+
+
+<script>
+    function addClass() {
+        var v = document.getElementById("auteurs");
+        v.className += "active";
+    }
+</script>
+
+{% endblock %}
